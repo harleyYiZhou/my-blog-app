@@ -2,33 +2,31 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Navbar from '@/components/Navbar.vue';
+import LoginButton from '@/components/LoginButton.vue';
 
 const searchText = ref('');
 const router = useRouter();
 
-const goToLogin = () => {
-  router.push('/login');
-};
+function toIndex() {
+  router.push('/');
+}
 
-const goToRegister = () => {
-  router.push('/register');
-};
+function search() {
+  router.push({ name: 'BlogList', query: { search: searchText.value } });
+}
 </script>
 
 <template>
   <el-header class="header">
     <!-- 左侧部分 -->
     <div class="left">
-      <div class="logo">Logo</div>
+      <div class="logo" @click="toIndex">Logo</div>
       <Navbar></Navbar>
-      <el-input v-model="searchText" placeholder="Search" class="search-input"></el-input>
+      <el-input v-model="searchText" placeholder="Search" @change="search" class="search-input"></el-input>
     </div>
 
     <!-- 右侧部分 -->
-    <div class="right">
-      <el-button type="text" @click="goToLogin">Login</el-button>
-      <el-button type="text" @click="goToRegister">Register</el-button>
-    </div>
+    <LoginButton></LoginButton>
   </el-header>
 </template>
 
@@ -51,10 +49,11 @@ const goToRegister = () => {
   margin-right: 20px;
   font-size: 1.5em;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .search-input {
-  width: 200px;
+  max-width: 350px;
   margin-right: 20px;
 }
 
@@ -62,4 +61,6 @@ const goToRegister = () => {
   display: flex;
   gap: 10px;
 }
+
+
 </style>

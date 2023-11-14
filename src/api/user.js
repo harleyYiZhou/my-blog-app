@@ -4,7 +4,7 @@ import axios from './axiosInstance';
 // 用户注册
 export const registerUser = async (userData) => {
   try {
-    const response = await axios.post('/api/register', userData);
+    const response = await axios.post('/api/user/register', userData);
     return response.data;
   } catch (error) {
     throw error;
@@ -14,7 +14,7 @@ export const registerUser = async (userData) => {
 // 用户登录
 export const loginUser = async (userData) => {
   try {
-    const response = await axios.post('/api/login', userData);
+    const response = await axios.post('/api/user/login', userData);
     return response.data;
   } catch (error) {
     throw error;

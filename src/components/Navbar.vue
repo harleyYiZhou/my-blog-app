@@ -1,42 +1,59 @@
 <template>
-  <el-menu
-    class="blog-navbar"
-    :default-active="activeCategory"
-    mode="horizontal"
-    @select="handleCategorySelect"
-  >
-    <el-menu-item
-      v-for="category in categories"
-      :key="category.id"
-      :index="category.url"
+  <div class="navbar">
+    <el-menu
+      class="blog-navbar"
+      :default-active="activeCategory"
+      mode="horizontal"
+      @select="handleCategorySelect"
     >
-      {{ category.name }}
-    </el-menu-item>
-  </el-menu>
+      <el-menu-item
+        v-for="category in visibleCategories"
+        :key="category.id"
+        :index="category.url"
+      >
+        {{ category.name }}
+      </el-menu-item>
+
+      <el-sub-menu v-if="hiddenCategories.length > 0" index="more">
+        <template #title>
+          <span>更多分类</span>
+        </template>
+        <el-menu-item
+          v-for="category in hiddenCategories"
+          :key="category.id"
+          :index="category.url"
+        >
+          {{ category.name }}
+        </el-menu-item>
+      </el-sub-menu>
+    </el-menu>
+  </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { ref, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 const categories = ref([
-  { id: 1, name: '前端', url: 'frontend' },
-  { id: 2, name: 'Java', url: 'java' },
-  { id: 3, name: 'Python', url: 'python' },
-  { id: 4, name: 'Go', url: 'go' },
-  { id: 5, name: '数据库', url: 'database' },
-  { id: 6, name: '操作系统', url: 'os' },
-  { id: 7, name: '计算机网络', url: 'network' },
-  { id: 8, name: '其他', url: 'other' },
+  { id: 1, name: "前端", url: "frontend" },
+  { id: 2, name: "Java", url: "java" },
+  { id: 3, name: "Python", url: "python" },
+  { id: 4, name: "Vue", url: "vue" },
+  { id: 5, name: "React", url: "react" },
+  { id: 6, name: "PHP", url: "PHP" },
   // 其他分类
 ]);
 
 const router = useRouter();
 const route = useRoute();
-const activeCategory = ref(route.params.category || 'frontend');
+const activeCategory = ref(route.params.category || "frontend");
+
+// 分类分为可见的和隐藏的
+const visibleCategories = computed(() => categories.value.slice(0, 4));
+const hiddenCategories = computed(() => categories.value.slice(4));
 
 const handleCategorySelect = (index) => {
-  router.push({ name: 'category', params: { category: index } });
+  router.push({ name: "BlogList", query: { category: index } });
 };
 </script>
 
@@ -52,16 +69,15 @@ const handleCategorySelect = (index) => {
   color: #f5f7fa;
 }
 
-
-
 .blog-navbar .el-menu-item:hover {
   background-color: #f5f7fa;
 }
 </style>
 
 <style lang="less">
-.blog-navbar {
-  .el-menu--horizontal>.el-sub-menu .el-sub-menu__title {
+.navbar {
+  margin: 0 10px;
+  .el-menu--horizontal > .el-sub-menu .el-sub-menu__title {
     color: #f5f7fa !important;
   }
 }

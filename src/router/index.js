@@ -9,6 +9,8 @@ import BlogEdit from '@/views/BlogEdit.vue';
 import Search from '@/views/Search.vue';
 import Favorites from '@/views/Favorites.vue';
 import Notifications from '@/views/Notifications.vue';
+import usePageTitle from '@/hooks/usePageTitle.ts';
+import MyBlogList from '@/views/MyBlogList.vue';
 
 const routes = [
   {
@@ -47,6 +49,11 @@ const routes = [
     component: BlogEdit,
   },
   {
+    path: '/my-blog-list',
+    name: 'MyBlogList',
+    component: MyBlogList,
+  },
+  {
     path: '/search',
     name: 'Search',
     component: Search,
@@ -66,6 +73,16 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+// 路由拦截器
+router.beforeEach((to, from, next) => {
+  // 在路由切换前调用 usePageTitle，并传递页面的标题
+  const setTitle = usePageTitle();
+  setTitle(to.name);
+
+  // 继续路由导航
+  next();
 });
 
 export default router;
