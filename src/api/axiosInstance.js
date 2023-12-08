@@ -3,8 +3,10 @@
 import axios from 'axios';
 const token = ''
 
+const baseURL = process.env.NODE_ENV !==  'production' ? 'http://localhost:3000' : `${window.location.origin}:3000`;
+
 const instance = axios.create({
-  baseURL: 'http://localhost:3000', // 替换成您的API基础URL
+  baseURL: baseURL, // 替换成您的API基础URL
   headers: {
     'Content-Type': 'application/json',
   // 如果有登录token，可以在这里设置
